@@ -1,6 +1,8 @@
 # Character Select SAA
 A Stand Alone App with AI prompt, Semi-auto Tag Complete and ComfyUI/Forge Neo(WebUI) API support.    
 
+> This fork's `zh-tw-ui-test` branch: [繁中測試版 Windows 安裝說明](README_zh-TW-test.md).
+
 > [!NOTE]
 > If you find a character that isn't show on the list but can be generated correctly, please don't hesitate to raise an issue to let me know.       
 >
@@ -573,4 +575,3 @@ Upscale Model list is `None` (ComfyUI)
 
 ComfyUI/WebUI is busy, cannot run new generation, please try again later.       
 Refer to 5, 6 in [README_SAAC.md](https://github.com/mirabarukaso/character_select_stand_alone_app/blob/main/README_SAAC.md)     
-
