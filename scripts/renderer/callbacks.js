@@ -555,7 +555,7 @@ async function update_thumb_select(value) {
         
     // Character List
     setDropdownLanguage('dropdown-character', [LANG.character1, LANG.character2, LANG.character3, LANG.original_character]);
-    globalThis.characterList.setValueOnly(globalThis.globalSettings.language === 'en-US');
+    globalThis.characterList.setValueOnly(globalThis.globalSettings.language !== 'zh-CN');
     globalThis.characterList.updateDefaults(SETTINGS.character1, SETTINGS.character2, SETTINGS.character3, 'None');
     globalThis.characterList.setTextValue(0, SETTINGS.weights4dropdownlist[4]);
     globalThis.characterList.setTextValue(1, SETTINGS.weights4dropdownlist[5]);
@@ -564,7 +564,7 @@ async function update_thumb_select(value) {
 
     // Regional Condition
     setDropdownLanguage('dropdown-character-regional', [LANG.regional_character_left, LANG.regional_character_right, LANG.regional_origina_character_left, LANG.regional_origina_character_right]);
-    globalThis.characterListRegional.setValueOnly(globalThis.globalSettings.language === 'en-US');
+    globalThis.characterListRegional.setValueOnly(globalThis.globalSettings.language !== 'zh-CN');
     globalThis.characterListRegional.updateDefaults(SETTINGS.character_left, SETTINGS.character_right, 'None', 'None');
     globalThis.characterListRegional.setTextValue(0, SETTINGS.weights4dropdownlist[7]);
     globalThis.characterListRegional.setTextValue(1, SETTINGS.weights4dropdownlist[8]);

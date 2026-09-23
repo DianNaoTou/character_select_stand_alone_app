@@ -76,11 +76,11 @@ export function updateLanguage(skipLoRA = false, skipRightClick = false) {
 
     // Character List
     setDropdownLanguage('dropdown-character', [LANG.character1, LANG.character2, LANG.character3, LANG.original_character]);
-    globalThis.characterList.setValueOnly(globalThis.globalSettings.language === 'en-US');
+    globalThis.characterList.setValueOnly(globalThis.globalSettings.language !== 'zh-CN');
 
     // Regional Condition
     setDropdownLanguage('dropdown-character-regional', [LANG.regional_character_left, LANG.regional_character_right, LANG.regional_origina_character_left, LANG.regional_origina_character_right]);
-    globalThis.characterListRegional.setValueOnly(globalThis.globalSettings.language === 'en-US');
+    globalThis.characterListRegional.setValueOnly(globalThis.globalSettings.language !== 'zh-CN');
 
     // View List
     setDropdownLanguage('dropdown-view', [LANG.view_angle, LANG.view_camera, LANG.view_background,LANG.view_style]);

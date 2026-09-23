@@ -180,7 +180,7 @@ async function handleStandardCharacter(character, seed, isValueOnly, index, FILE
         key: FILES.characterListArray[selectedIndex][0],
         value: FILES.characterListArray[selectedIndex][1]
         });
-        if(globalThis.globalSettings.language === 'en-US')
+        if(globalThis.globalSettings.language !== 'zh-CN')
             name = FILES.characterListArray[selectedIndex][1];
         else
             name = FILES.characterListArray[selectedIndex][0];
@@ -191,7 +191,7 @@ async function handleStandardCharacter(character, seed, isValueOnly, index, FILE
         key: character,
         value: globalThis.characterListRegional.getValue()[index]
         });
-        if(globalThis.globalSettings.language === 'en-US')
+        if(globalThis.globalSettings.language !== 'zh-CN')
             name = tag;
         else
             name = character;   

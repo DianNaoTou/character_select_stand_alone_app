@@ -135,7 +135,7 @@ export function myCharacterList(containerId, wai_characters, oc_characters) {
         callback_func: callback_myCharacterList_updateThumb,
         enableSearch: true,
         enableOverlay: true,
-        valueOnly: (globalThis.globalSettings.language === 'en-US'),
+        valueOnly: (globalThis.globalSettings.language !== 'zh-CN'),
         height: 40,
         enableNumberInput: true
     });
@@ -196,7 +196,7 @@ export function myRegionalCharacterList(containerId, wai_characters, oc_characte
         callback_func: callback_myCharacterList_updateThumb,
         enableSearch: true,
         enableOverlay: true,
-        valueOnly: (globalThis.globalSettings.language === 'en-US'),
+        valueOnly: (globalThis.globalSettings.language !== 'zh-CN'),
         height: 40,
         enableNumberInput: true
     });
