@@ -632,17 +632,18 @@ async function init(){
 }
 
 async function setupWizard(){
+    const FILES = globalThis.cachedFiles;
+    const languageCodes = Object.keys(FILES.language);
     const languageSelect = await showDialog('radio', { 
-        message: 'Select your language\n请选择界面语言',
-        items: 'en-US,zh-CN',
-        itemsTitle:'English (US),中文（简体）',
+        message: 'Select your language\n請選擇介面語言 / 请选择界面语言',
+        items: languageCodes.join(','),
+        itemsTitle: languageCodes.map(code => FILES.language[code].language).join(','),
         buttonText: 'OK'
     });
     console.log(languageSelect);
-    globalThis.globalSettings.language = ['en-US','zh-CN'][languageSelect];
+    globalThis.globalSettings.language = languageCodes[languageSelect] ?? 'en-US';
 
     const SETTINGS = globalThis.globalSettings;
-    const FILES = globalThis.cachedFiles;
     const LANG = FILES.language[SETTINGS.language];
 
     await showDialog('info', { message: LANG.setup_greet_message, buttonText:SETTINGS.setup_ok});
