@@ -115,7 +115,7 @@ contextBridge.exposeInMainWorld('api', {
   getONNXList: async (args) => ipcRenderer.invoke('get-onnx-list', args),
   // Tag Auto Complete
   tagReload: async () => ipcRenderer.invoke('tag-reload'),
-  tagGet: async (text) => ipcRenderer.invoke('tag-get-suggestions', text),
+  tagGet: async (text, language) => ipcRenderer.invoke('tag-get-suggestions', text, language),
   // AI
   remoteAI: async (options) => ipcRenderer.invoke('request-ai-remote', options),
   localAI: async (options) => ipcRenderer.invoke('request-ai-local', options),

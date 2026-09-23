@@ -178,19 +178,20 @@ export function setupSuggestionSystem() {
             const cursorPosition = textbox.selectionStart;
             let wordToSend = extractWordToSend(value, cursorPosition);
 
-            if (!wordToSend || wordToSend === lastWordSent) {
+            const language = globalThis.globalSettings.language;
+            if (!wordToSend || `${language}:${wordToSend}` === lastWordSent) {
                 suggestionBox.style.display = 'none';
                 return;
             }
             wordToSend = wordToSend.replaceAll(' ', '_');
-            lastWordSent = wordToSend;
+            lastWordSent = `${language}:${wordToSend}`;
 
             try {            
                 let suggestions;
                 if (globalThis.inBrowser) {
-                    suggestions = await sendWebSocketMessage({ type: 'API', method: 'tagGet', params: [wordToSend] });
+                    suggestions = await sendWebSocketMessage({ type: 'API', method: 'tagGet', params: [wordToSend, language] });
                 } else {
-                    suggestions = await globalThis.api.tagGet(wordToSend);
+                    suggestions = await globalThis.api.tagGet(wordToSend, language);
                 }
 
                 if (!suggestions || suggestions.every(s => s.length === 0)) {

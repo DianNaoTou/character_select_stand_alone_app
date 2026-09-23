@@ -2,6 +2,7 @@ import { app, ipcMain, dialog } from 'electron';
 import path from 'node:path';
 import * as fs from 'node:fs';
 import { getWildcardsList } from './wildCards.js';
+import { normalizeTagSearch, localizeTagAliases } from './tagLanguage.js';
 
 const CAT = '[TagAutoCompleteBackend]';
 const appPath = app.isPackaged ? path.join(path.dirname(app.getPath('exe')), 'resources', 'app') : app.getAppPath();
@@ -29,6 +30,7 @@ class PromptManager {
     prompts = [];
     lastCustomPrompt = "";
     previousCustomPrompt = "";
+    lastLanguage = null;
     dataLoaded = false;
     useTranslate = false;
 
@@ -148,11 +150,11 @@ class PromptManager {
         this.prompts.sort((a, b) => b.heat - a.heat);
     }
 
-    getSuggestions(text, limit = 50, group = null) {
+    getSuggestions(text, limit = 50, group = null, language = 'en-US') {
         if (!text) return [];
 
         const parts = text.split(',');
-        const lastWord = parts.at(-1).trim().toLowerCase();
+        const lastWord = normalizeTagSearch(parts.at(-1).trim().toLowerCase(), language);
 
         if (!lastWord) return [];
 
@@ -252,7 +254,7 @@ class PromptManager {
     }
 
     // eslint-disable-next-line sonarjs/cognitive-complexity
-    updateSuggestions(text) {
+    updateSuggestions(text, language = 'en-US') {
         if (!this.dataLoaded) {
             console.log(CAT, `No data loaded. Returning empty dataset.`);
             return [];
@@ -268,6 +270,10 @@ class PromptManager {
                 modifiedIndex = i;
                 break;
             }
+        }
+
+        if (modifiedIndex === -1 && language !== this.lastLanguage && currentParts.length > 0) {
+            modifiedIndex = currentParts.length - 1;
         }
 
         if (modifiedIndex === -1 && currentParts.length > previousParts.length) {
@@ -292,10 +298,10 @@ class PromptManager {
             }                    
             
             if (artistOnly) {
-                matches = this.getSuggestions(targetWord, 50, [1, 8]);
+                matches = this.getSuggestions(targetWord, 50, [1, 8], language);
                 matches = matches.filter(match => Number.parseInt(match.group) === 1 || Number.parseInt(match.group) === 8);
             } else {
-                matches = this.getSuggestions(targetWord);
+                matches = this.getSuggestions(targetWord, 50, null, language);
             }
         }
 
@@ -309,6 +315,8 @@ class PromptManager {
                     displayAlias = promptInfo.aliases.split(',').map(a => a.trim()).join(', ');
                 }
             }
+
+            displayAlias = localizeTagAliases(displayAlias, language);
 
             const group = Number.parseInt(match.group);
             const groupName = groupNames[group] || 'Unknown';
@@ -326,6 +334,7 @@ class PromptManager {
 
         this.previousCustomPrompt = this.lastCustomPrompt;
         this.lastCustomPrompt = text;
+        this.lastLanguage = language;
 
         return items;
     }
@@ -352,8 +361,8 @@ async function setupTagAutoCompleteBackend(){
             return await tagReload();
         });
 
-        ipcMain.handle('tag-get-suggestions', async (event, text) => {            
-            return tagGet(text);
+        ipcMain.handle('tag-get-suggestions', async (event, text, language) => {
+            return tagGet(text, language);
         });
 
         return tagBackend.dataLoaded;
@@ -368,12 +377,13 @@ async function tagReload(){
     tagBackend.prompts = [];
     tagBackend.lastCustomPrompt = "";
     tagBackend.previousCustomPrompt = "";
+    tagBackend.lastLanguage = null;
     await reloadData();
     return tagBackend.dataLoaded;
 }
 
-function tagGet(text) {
-    return tagBackend.updateSuggestions(text);
+function tagGet(text, language) {
+    return tagBackend.updateSuggestions(text, language);
 }
 
 export {
@@ -381,4 +391,3 @@ export {
     tagReload,
     tagGet
 };
-
